@@ -28,7 +28,7 @@ $openingHoursData = json_decode($jsonData, true);
 	echo $isOpen ? "ouverte." : "fermée. <br>";
 
 	// Appel de la méthode nextOpeningDate
-	$nextOpening = nextOpeningDate($openingHoursData, '2024-02-22 14:00:00');
+	$nextOpening = nextOpeningDate($openingHoursData, $currentDateTime);
 	if ($nextOpening) {
 		// Convertir la chaîne de date en objet DateTime
 		$nextOpeningDateTime = new DateTime($nextOpening);
