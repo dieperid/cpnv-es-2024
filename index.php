@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
+// Inclure les fonctions
 require_once 'php/functions.php';
-
-// Lecture du contenu JSON depuis le fichier
-$jsonPath = 'php/opening_dates.json';
-$jsonData = file_get_contents($jsonFilePath);
-$openingHoursData = json_decode($jsonData, true);
 ?>
 
 <head>
@@ -22,24 +18,22 @@ $openingHoursData = json_decode($jsonData, true);
 	$currentDateTime = new DateTime();
 	$currentDateTime = date('Y-m-d H:i:s');
 
-	$isOpen = isOpenOn($openingHoursData, $currentDateTime);
-
-	echo "La boutique est actuellement ";
-	echo $isOpen ? "ouverte." : "fermée. <br>";
+	// Check si le magasin est ouvert
+	$isOpen = isOpenOn($currentDateTime);
+	if ($isOpen) {
+		echo "La boutique est actuellement ouverte.";
+	} else {
+		echo "La boutique est actuellement fermée.";
+	}
 
 	// Appel de la méthode nextOpeningDate
-	$nextOpening = nextOpeningDate($openingHoursData, $currentDateTime);
+	$nextOpening = nextOpeningDate($currentDateTime);
 	if ($nextOpening) {
-		// Convertir la chaîne de date en objet DateTime
 		$nextOpeningDateTime = new DateTime($nextOpening);
 
-		// Formater la date et l'heure dans le format spécifié
-		$formattedDate = $nextOpeningDateTime->format('d.m.Y');
-		$formattedTime = $nextOpeningDateTime->format('H\hi');
-
-		echo "La prochaine ouverture est prévue pour le $formattedDate à $formattedTime";
+		echo '<br> La prochaine ouverture est prévue pour le ' . $nextOpeningDateTime->format('d.m.Y') . ' à ' . $nextOpeningDateTime->format('H\hi');
 	} else {
-		echo "Aucune date d'ouverture future trouvée.";
+		echo "<br> Aucune date d'ouverture future trouvée.";
 	}
 	?>
 </body>
